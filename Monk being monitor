@@ -1,0 +1,70 @@
+//Input:
+// 1
+//6
+//3 1 3 2 3 2
+//Output: 2
+//Number of students having height = 3 is 3.
+//Number of students having height = 2 is 2.
+//Number of students having height = 1 is 1.
+
+//Here Mishki can choose students with height=3 () and height = 1 () , as the difference between number of students having height () and number of students having height () is maximum and greater than 0.
+
+// Sample code to perform I/O:
+
+process.stdin.resume();
+process.stdin.setEncoding("utf-8");
+var stdin_input = "";
+
+process.stdin.on("data", function (input) {
+    stdin_input += input;                               // Reading input from STDIN
+});
+
+process.stdin.on("end", function () {
+   main(stdin_input);
+});
+
+function main(input) {
+    let lines = input.split('\n');
+    let t = parseInt(lines[0]);
+    let i = 1;
+    let n, studentsArr;
+    let outPut;
+    while(t != 0){
+        n = parseInt(lines[i]);
+        studentsArr = lines[i+1];
+        studentsArr = studentsArr.split(' ');
+        outPut = diffStudents(studentsArr, n);
+        process.stdout.write(`${outPut}\n`); 
+        i = i +2;
+        t--;
+    }      // Writing output to STDOUT
+}
+
+// Warning: Printing unwanted or ill-formatted data to output will cause the test cases to fail
+
+function diffStudents(arr, n){
+    if(n == 1) return -1;
+    let obj = {};
+    let maxVal = { key: '', value: -1};
+    let minVal = {key: '', value: Infinity};
+    let indexVal;
+    for(let i=0; i<n; i++){
+        indexVal = arr[i];
+        obj[indexVal] = (obj[indexVal] || 0) + 1;
+    }
+    if((Object.keys(obj)).length == 1) return -1;
+    for(let key in obj){
+        if(parseInt(obj[key]) < minVal.value){ 
+            minVal.key = key;
+            minVal.value = obj[key];
+            maxVal = { key: key , value: obj[key]};
+        }
+        if(parseInt(obj[key]) > maxVal.value){
+            maxVal.key = key;
+            maxVal.value = obj[key];
+        }
+    }
+    if(maxVal.value > minVal.value){
+         return maxVal.value - minVal.value;
+    }else return 1;
+}
